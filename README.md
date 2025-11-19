@@ -1,4 +1,4 @@
-# 🌐 LendQuest DApp
+# 💸 LendQuest DApp
 
 ## Decentralized Collateralized Peer-to-Peer Lending Platform
 
