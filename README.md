@@ -34,5 +34,5 @@ https://youtu.be/YEvDTQWt60U
 ### Technical Details
 * **Technology:** HTML, CSS, Vanilla JavaScript, and the **Ethers.js** library for blockchain interaction.
 * **Network:** Interacts with a smart contract on the **Sepolia Testnet**.
-* **Contract Link:** View on Etherscan: **[0xf476C5160F9EBc74d5D768DdE063e3331D148559](https://sepolia.etherscan.io/address/0xf476C5160F9EBc74d5D768DdE063e3331D148559)**
+* **Contract Link:** View on Etherscan: **[0x4d61123C0a113b80d8746CDaf156C50AFA00D1D4](https://sepolia.etherscan.io/address/0x4d61123C0a113b80d8746CDaf156C50AFA00D1D4)**
 * **Access:** Requires a Web3 wallet like **MetaMask** to connect and perform transactions.
