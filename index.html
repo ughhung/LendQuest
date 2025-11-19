@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LendQuest – Tabbed Interface</title>
+    <link rel="stylesheet" href="./style.css"> 
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="main-header-content">
+                <div class="header-logo-group">
+                    <img src="LendQuest.png" alt="LendQuest Logo" class="logo">
+                </div>
+                
+                <div id="userInfoDropdownTrigger" class="user-dropdown-trigger" onclick="openUserModal()">
+                    <span id="headerAccountStatus">Connect Wallet</span>
+                    <span id="headerReputationStatus" class="reputation-badge"></span>
+                </div>
+            </div>
+        </header>
+
+        <div id="userModal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-button" onclick="closeUserModal()">&times;</span>
+                <h3 id="modalTitle" class="section-title">Wallet Details</h3>
+                
+                <div id="modalContentConnected">
+                    
+                    <div class="modal-section-center">
+                        <h4 id="modalShortAddress" class="section-subtitle">Not Connected</h4>
+                    </div>
+
+                    <div class="modal-section-center">
+                        <p><strong>Reputation:</strong> <span id="modalReputation">N/A</span></p>
+                    </div>
+
+                    <div class="modal-section-center">
+                        <button id="disconnectButton" class="button-danger">Disconnect Wallet</button>
+                    </div>
+
+                    <hr />
+                    
+                    <h4 class="section-subtitle">Contract Link and Status</h4>
+                    
+                    <p class="status-info">
+                        Contract: 
+                        <a id="contractLink" href="#" target="_blank">
+                            <span id="contractAddress"></span>
+                        </a>
+                    </p>
+                    
+                    <p class="status-info hidden">
+                        Full Address: <span id="modalFullAddress">Not connected.</span>
+                    </p>
+                    <p id="status" class="status-message"></p>
+                    
+                </div>
+                
+                <div id="modalContentDisconnected">
+                    <p>Connect to your MetaMask wallet!</p>
+                    <button id="modalConnectButton" class="button-success mt-4">Connect Wallet</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div id="tabs" class="tab-nav">
+            <button id="tab-dashboard" onclick="switchTab('dashboard')" class="tab-button active">
+                Dashboard & Loans
+            </button>
+            <button id="tab-borrower" onclick="switchTab('borrower')" class="tab-button">
+                Borrower Actions
+            </button>
+            <button id="tab-lender" onclick="switchTab('lender')" class="tab-button">
+                Lender Actions
+            </button>
+        </div>
+
+        <!-- TAB 1: Dashboard & View Loans -->
+        <div id="dashboard" class="tab-content">
+            <h2 class="section-title">Available Loan Requests (To Fund)</h2>
+            <p id="loanListStatus" class="status-info">Connect your wallet to view available loans.</p>
+            <div id="loanList" class="loan-list">
+            </div>
+
+            <hr />
+
+            <!-- View Loan Info -->
+            <h2 class="section-title">View Loan Details</h2>
+            <div class="form-group-inline">
+                <div class="input-container">
+                    <label for="viewLoanId">Loan ID:</label>
+                    <input id="viewLoanId" type="number" placeholder="Enter ID" />
+                </div>
+                <button id="viewButton">View Loan Info</button>
+            </div>
+            <pre id="loanInfo" class="code-block"></pre>
+
+            <hr />
+            
+        </div>
+
+        <!-- TAB 2: Borrower Actions -->
+        <div id="borrower" class="tab-content hidden">
+            <!-- Post a Loan -->
+            <h2 class="section-title">Post a New Loan Request</h2>
+            <div class="form-card">
+                
+                <!-- PRINCIPAL -->
+                <div class="form-group">
+                    <label for="principalEth">Principal:</label>
+                    <input id="principalEth" type="text" placeholder="How much ETH do you need to borrow? e.g. 100" />
+                </div>
+
+                <!-- COLLATERAL -->
+                <div class="form-group">
+                    <label for="collateralEth">Collateral:</label>
+                    <input id="collateralEth" type="text" placeholder="Collateral must be 50% more than your Principal! e.g. 150" />
+                </div>
+
+                <!-- INTEREST -->
+                <div class="form-group">
+                    <label for="rateBps">Interest:</label>
+                    <input id="rateBps" type="number" placeholder="What is your interest rate for this loan? e,g. 500 = 5%" />
+                </div>
+
+                <!-- DURATION -->
+                <div class="form-group">
+                    <label for="duration">Duration (seconds):</label>
+                    <input id="duration" type="number" placeholder="How long you have to repay the loan. e.g. 86400 secs (1 day)" />
+                </div>
+
+                <!-- DESCRIPTION -->
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <input id="description" type="text" placeholder="Why do you need this loan? e.g. Gimme money pls!" />
+                </div>
+                
+                <button id="postButton" class="button-success">Post Request</button>
+            </div>
+
+            <hr />
+
+            <!-- Borrower Loan Portfolio -->
+            <h2 class="section-title">My Current Loan Status</h2>
+            <p id="borrowerPortfolioStatus" class="status-info">Connect wallet and switch to this tab to load your loan status.</p>
+            <div id="borrowerLoanList" class="loan-list">
+                <!-- Borrower loans will be rendered here, color-coded by status -->
+            </div>
+        </div>
+
+        <!-- TAB 3: Lender Actions -->
+        <div id="lender" class="tab-content hidden">
+            <h2 class="section-title">My Loan Portfolio Status</h2>
+            <p id="lenderPortfolioStatus" class="status-info">Connect wallet and switch to this tab to load your funded loans.</p>
+            <div id="lenderLoanList" class="loan-list">
+                <!-- All loans where user is the lender will be rendered here, color-coded by status -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.10.0/dist/ethers.umd.min.js"></script>
+    
+    <script src="./abi.js"></script> 
+    
+    <script src="./app.js"></script> 
+</body>
+</html>
