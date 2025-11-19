@@ -21,6 +21,16 @@ The site is organized into three main sections to manage the full loan lifecycle
 * **My Portfolio:** Track the status of loans you have funded.
 * **Seize Collateral:** Action button available if a loan becomes overdue, allowing you to claim the borrower's collateral as compensation.
 
+---
+
+### ▶️ Video Demo / Tutorial
+
+For a quick overview of how the LendQuest platform works, view the demonstration below:
+
+https://youtu.be/kskgtMD6L5c
+
+---
+
 ### Technical Details
 * **Technology:** HTML, CSS, Vanilla JavaScript, and the **Ethers.js** library for blockchain interaction.
 * **Network:** Interacts with a smart contract on the **Sepolia Testnet**.
