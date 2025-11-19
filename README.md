@@ -9,7 +9,7 @@ LendQuest is a decentralized finance (DeFi) application that facilitates **colla
 The site is organized into three main sections to manage the full loan lifecycle:
 
 #### 1. Dashboard & Available Loans
-* **For Lenders:** View and filter all active loan requests that have been posted by borrowers and are awaiting funding.
+* **For Lenders:** View all active loan requests that have been posted by borrowers and are awaiting funding.
 * **Funding:** Use the dedicated button to fund an available loan by sending the required principal amount.
 
 #### 2. Borrower Actions
@@ -24,4 +24,5 @@ The site is organized into three main sections to manage the full loan lifecycle
 ### Technical Details
 * **Technology:** HTML, CSS, Vanilla JavaScript, and the **Ethers.js** library for blockchain interaction.
 * **Network:** Interacts with a smart contract on the **Sepolia Testnet**.
+* **Contract Link:** View on Etherscan: **[0xf476C5160F9EBc74d5D768DdE063e3331D148559](https://sepolia.etherscan.io/address/0xf476C5160F9EBc74d5D768DdE063e3331D148559)**
 * **Access:** Requires a Web3 wallet like **MetaMask** to connect and perform transactions.
