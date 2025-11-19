@@ -27,7 +27,7 @@ The site is organized into three main sections to manage the full loan lifecycle
 
 For a quick overview of how the LendQuest platform works, view the demonstration below:
 
-https://youtu.be/kskgtMD6L5c
+https://www.youtube.com/watch?v=kskgtMD6L5c
 
 ---
 
