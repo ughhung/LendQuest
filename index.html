@@ -65,7 +65,6 @@
             </div>
         </div>
 
-        <!-- Tab Navigation -->
         <div id="tabs" class="tab-nav">
             <button id="tab-dashboard" onclick="switchTab('dashboard')" class="tab-button active">
                 Dashboard & Loans
@@ -78,7 +77,6 @@
             </button>
         </div>
 
-        <!-- TAB 1: Dashboard & View Loans -->
         <div id="dashboard" class="tab-content">
             <h2 class="section-title">Available Loan Requests (To Fund)</h2>
             <p id="loanListStatus" class="status-info">Connect your wallet to view available loans.</p>
@@ -87,7 +85,6 @@
 
             <hr />
 
-            <!-- View Loan Info -->
             <h2 class="section-title">View Loan Details</h2>
             <div class="form-group-inline">
                 <div class="input-container">
@@ -102,37 +99,33 @@
             
         </div>
 
-        <!-- TAB 2: Borrower Actions -->
         <div id="borrower" class="tab-content hidden">
-            <!-- Post a Loan -->
             <h2 class="section-title">Post a New Loan Request</h2>
             <div class="form-card">
                 
-                <!-- PRINCIPAL -->
                 <div class="form-group">
                     <label for="principalEth">Principal:</label>
                     <input id="principalEth" type="text" placeholder="How much ETH do you need to borrow? e.g. 100" />
                 </div>
 
-                <!-- COLLATERAL -->
                 <div class="form-group">
                     <label for="collateralEth">Collateral:</label>
-                    <input id="collateralEth" type="text" placeholder="Collateral must be 50% more than your Principal! e.g. 150" />
+                    <input id="collateralEth" type="text" placeholder="e.g., Min required ETH" /> 
+                    <small id="collateralTip" class="status-info">
+                        Enter your desired Principal to see the minimum collateral required based on your reputation (130% - 180%).
+                    </small> 
                 </div>
 
-                <!-- INTEREST -->
                 <div class="form-group">
                     <label for="rateBps">Interest:</label>
                     <input id="rateBps" type="number" placeholder="What is your interest rate for this loan? e,g. 500 = 5%" />
                 </div>
 
-                <!-- DURATION -->
                 <div class="form-group">
                     <label for="duration">Duration (seconds):</label>
                     <input id="duration" type="number" placeholder="How long you have to repay the loan. e.g. 86400 secs (1 day)" />
                 </div>
 
-                <!-- DESCRIPTION -->
                 <div class="form-group">
                     <label for="description">Description:</label>
                     <input id="description" type="text" placeholder="Why do you need this loan? e.g. Gimme money pls!" />
@@ -143,21 +136,17 @@
 
             <hr />
 
-            <!-- Borrower Loan Portfolio -->
             <h2 class="section-title">My Current Loan Status</h2>
             <p id="borrowerPortfolioStatus" class="status-info">Connect wallet and switch to this tab to load your loan status.</p>
             <div id="borrowerLoanList" class="loan-list">
-                <!-- Borrower loans will be rendered here, color-coded by status -->
-            </div>
+                </div>
         </div>
 
-        <!-- TAB 3: Lender Actions -->
         <div id="lender" class="tab-content hidden">
             <h2 class="section-title">My Loan Portfolio Status</h2>
             <p id="lenderPortfolioStatus" class="status-info">Connect wallet and switch to this tab to load your funded loans.</p>
             <div id="lenderLoanList" class="loan-list">
-                <!-- All loans where user is the lender will be rendered here, color-coded by status -->
-            </div>
+                </div>
         </div>
     </div>
 

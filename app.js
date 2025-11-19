@@ -11,13 +11,16 @@ function switchTab(tabId) {
             fetchAndDisplayLoans();
         } else if (tabId === 'borrower') {
             fetchBorrowerPortfolio();
+            // Call updateCollateralTip when switching to the borrower tab to initialize the hint
+            updateCollateralTip(); 
         } else if (tabId === 'lender') {
             fetchLenderPortfolio();
         }
     }
 }
 
-const CONTRACT_ADDRESS = "0xf476C5160F9EBc74d5D768DdE063e3331D148559";
+// --- CONTRACT ADDRESS & GLOBALS ---
+const CONTRACT_ADDRESS = "0x4d61123C0a113b80d8746CDaf156C50AFA00D1D4";
 const STATUS_NAMES = ["Posted", "Funded", "Repaid", "Liquidated", "Canceled"];
 const ABI = LENDQUEST_ABI; 
 
@@ -75,6 +78,63 @@ function formatTimestampToDate(timestamp) {
     return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
 }
 
+// --- DYNAMIC COLLATERAL LOGIC (MIRRORS CONTRACT) ---
+function calculateMinCollateralRatio(reputation) {
+    // Mirrors Solidity's getCollateralRatio(uint256 rep) from the contract
+    const baseRatioBps = 18000;       // 180%
+    const discountBpsPerTier = 200;   // 2%
+    const tierSize = 5;               // Rep points per tier
+
+    // Calculate how many tiers (multiples of 5) the borrower has passed
+    let tiersPassed = Math.floor(reputation / tierSize);
+    
+    // Max Tiers = 25 (to cap minimum collateral at 130%)
+    const maxTiers = 25; 
+
+    // Cap the number of tiers passed
+    if (tiersPassed > maxTiers) {
+        tiersPassed = maxTiers;
+    }
+
+    const totalDiscountBps = tiersPassed * discountBpsPerTier;
+    
+    // Calculate the required ratio in BPS 
+    const requiredRatioBps = baseRatioBps - totalDiscountBps;
+
+    // Return the ratio as a percentage (Ratio in BPS / 100)
+    return requiredRatioBps / 100;
+}
+
+// --- FRONT-END COLLATERAL DISPLAY ---
+function updateCollateralTip() {
+    const principalInput = document.getElementById("principalEth");
+    const tipElement = document.getElementById("collateralTip");
+    
+    // Get borrower reputation
+    const repElement = document.getElementById("modalReputation");
+    const repText = repElement ? repElement.querySelector('.reputation')?.innerText : '0';
+    const rep = repText !== 'N/A' ? Number(repText) : 0;
+    
+    const ratio = calculateMinCollateralRatio(rep);
+    const principal = parseFloat(principalInput.value) || 0;
+    
+    if (principal <= 0 || isNaN(principal)) {
+        tipElement.innerHTML = 
+            `Your reputation (<span class="reputation">${rep}</span>) requires a minimum collateral of <span class="text-danger">${ratio}%</span> of the principal amount.`;
+        document.getElementById("collateralEth").placeholder = `e.g., Min ${ratio} ETH`;
+        return;
+    }
+    
+    // Calculate the required ETH value
+    const required = (principal * ratio) / 100;
+    
+    // NOTE: Increased precision to 6 decimals to prevent contract reverts on small ETH amounts
+    document.getElementById("collateralEth").placeholder = `Min: ${required.toFixed(6)} ETH`; 
+    
+    tipElement.innerHTML = 
+        `Your reputation (<span class="reputation">${rep}</span>) requires a minimum collateral of <span class="text-danger">${ratio.toFixed(2)}%</span>. You must post at least <strong>${required.toFixed(6)} ETH</strong>.`;
+}
+
 
 async function fetchAndDisplayReputation(address, displayElementId) {
     if (!contract || !address) return;
@@ -87,6 +147,9 @@ async function fetchAndDisplayReputation(address, displayElementId) {
             `<span class="reputation">${Number(rep.toString())}</span>`;
 
         document.getElementById("headerReputationStatus").innerText = '';
+        
+        // After fetching reputation, update the collateral tip
+        updateCollateralTip();
 
     } catch (err) {
         console.error(`Error fetching reputation for ${address}:`, err);
@@ -603,6 +666,9 @@ document.getElementById("modalConnectButton").onclick = connectWallet;
 document.getElementById("disconnectButton").onclick = disconnectWallet;
 document.getElementById("postButton").onclick = postLoan;
 document.getElementById("viewButton").onclick = viewLoan;
+
+// Event listener for dynamic collateral calculation
+document.getElementById("principalEth").oninput = updateCollateralTip; 
 
 window.onload = () => {
     switchTab('dashboard'); 
